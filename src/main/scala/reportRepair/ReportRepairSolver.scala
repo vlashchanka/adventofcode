@@ -13,9 +13,10 @@ object ReportRepairSolver {
     } else {
       val diff = sum - list.head
       if (set.contains(diff)) {
-        return Right(list.head * diff)
+        Right(list.head * diff)
+      } else {
+        getPairProduct(sum, list.tail, Set(list.head) ++ set)
       }
-      getPairProduct(sum, list.tail, Set(list.head) ++ set)
     }
   }
 
