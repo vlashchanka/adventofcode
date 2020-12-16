@@ -14,6 +14,17 @@ object PasswordValidator {
     }
   }
 
+  def isValidForNewPolicy(encodedPolicy: String): Boolean = {
+    toPasswordWithPolicy(encodedPolicy) match {
+      case (password, char, charFirstPosition, charSecondPosition) =>
+        def isCharInPassword(position: Int): Boolean = password.charAt(position - 1) == char
+        List(
+          isCharInPassword(charFirstPosition),
+          isCharInPassword(charSecondPosition)
+        ).count(c => c) == 1
+    }
+  }
+
   private def toPasswordWithPolicy(encodedPolicy: String): PasswordWithPolicy = {
     // Examples:
     // 6-8 f: gmjfrvff
