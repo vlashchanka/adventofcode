@@ -34,7 +34,7 @@ object Solver extends Problem(2020, 3) {
       getTreesCount(input, 1, 2),
     )
 
-    val treesSlopesProduct = treesSlopes.map(BigInt(_)).product
+    val treesSlopesProduct = treesSlopes.foldLeft(1.toLong)((m, n) => m * n)
 
     println(s"Trees slopes product: $treesSlopesProduct")
   }
