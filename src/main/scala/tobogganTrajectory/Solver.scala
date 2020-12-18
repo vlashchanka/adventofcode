@@ -7,6 +7,7 @@ import scala.annotation.tailrec
 object Solver extends Problem(2020, 3) {
 
   def getTreesCount(lines: List[String], shiftRight :Int, shiftDown: Int): Int = {
+    val tree = '#'
     @tailrec
     def getTreesOnLines(lines: List[String], pos: Int, trees: Int): Int = {
       if (lines.isEmpty) {
@@ -15,7 +16,7 @@ object Solver extends Problem(2020, 3) {
         val line = lines.head
         val newPos = (pos + shiftRight) % line.length
         val treeOrSpace = line.charAt(newPos)
-        val treesCountAfterMove = if (treeOrSpace == '#') trees + 1 else trees
+        val treesCountAfterMove = if (treeOrSpace == tree) trees + 1 else trees
         getTreesOnLines(lines.slice(shiftDown, lines.length), newPos, treesCountAfterMove)
       }
     }
