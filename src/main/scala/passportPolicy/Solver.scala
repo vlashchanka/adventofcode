@@ -12,7 +12,7 @@ object Solver extends Problem(2020, 4) {
   }
 
   def getValidPassportsCount(lines: List[String]): Int = {
-    val pattern = "(\\w+):([#\\w]+)".r
+    val fieldsExtractor = "(\\w+):([#\\w]+)".r
 
     val CountryId = "cid"
     val RequiredFieldsCount = 7
@@ -34,7 +34,7 @@ object Solver extends Problem(2020, 4) {
         if (lines.head.isEmpty) {
           combinePassports(lines.tail, countPassports, newPassport())
         } else {
-          val updatedPassport = pattern.findAllIn(lines.head).matchData
+          val updatedPassport = fieldsExtractor.findAllIn(lines.head).matchData
             .foldLeft(currentPassport)(
               (pass, matches) => {
                 val key = matches.group(1)
