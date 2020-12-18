@@ -5,20 +5,20 @@ import aocd.Problem
 import scala.annotation.tailrec
 
 object Solver extends Problem(2020, 4) {
-  type PassportFields = Map[String, String]
+  type Passport = Map[String, String]
   def getValidPassportsCount(lines: List[String]): Int = {
     val pattern = "(\\w+):([#\\w]+)".r
 
     val CountryId = "cid"
     val RequiredFieldsCount = 7
 
-    def isValidPassport(passport: PassportFields): Boolean = {
+    def isValidPassport(passport: Passport): Boolean = {
       val counted = passport.count(c => c._1 != CountryId)
       counted == RequiredFieldsCount
     }
 
     @tailrec
-    def combinePassports(lines: List[String], passports: Int = 0, currentPassport: PassportFields): Int = {
+    def combinePassports(lines: List[String], passports: Int = 0, currentPassport: Passport): Int = {
       def countPassports: Int = {
         if (isValidPassport(currentPassport)) passports + 1 else passports
       }
