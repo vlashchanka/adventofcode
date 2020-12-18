@@ -6,6 +6,11 @@ import scala.annotation.tailrec
 
 object Solver extends Problem(2020, 4) {
   type Passport = Map[String, String]
+
+  def newPassport(): Passport = {
+    Map()
+  }
+
   def getValidPassportsCount(lines: List[String]): Int = {
     val pattern = "(\\w+):([#\\w]+)".r
 
@@ -27,7 +32,7 @@ object Solver extends Problem(2020, 4) {
         countPassports
       } else {
         if (lines.head.isEmpty) {
-          combinePassports(lines.tail, countPassports, Map())
+          combinePassports(lines.tail, countPassports, newPassport())
         } else {
           val updatedPassport = pattern.findAllIn(lines.head).matchData
             .foldLeft(currentPassport)(
@@ -42,7 +47,7 @@ object Solver extends Problem(2020, 4) {
       }
     }
 
-    combinePassports(lines, 0, Map())
+    combinePassports(lines, 0, newPassport())
   }
 
   def run(input: List[String]): Unit = {
