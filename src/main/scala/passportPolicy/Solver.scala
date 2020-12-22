@@ -12,13 +12,20 @@ object Solver extends Problem(2020, 4) {
   }
 
   def getValidPassportsCount(lines: List[String]): Int = {
-    val fieldsExtractor = "(\\w+):([#\\w]+)".r
+    val fieldsExtractor = """(\w+):([#\w]+)""".r
 
     val CountryId = "cid"
     val RequiredFieldsCount = 7
 
-    def isValidPassport(passport: Passport): Boolean = {
+    def isValidPassportWorking(passport: Passport): Boolean = {
       val counted = passport.count(c => c._1 != CountryId)
+      counted == RequiredFieldsCount
+    }
+    def isValidPassport(passport: Passport): Boolean = {
+      val counted = passport.count({
+        case (countryId, _) => countryId != CountryId
+        case _ => false
+      })
       counted == RequiredFieldsCount
     }
 
