@@ -28,20 +28,19 @@ object Solver extends Problem(2020, 4) {
     @tailrec
     def combinePassports(lines: List[String], passports: Int = 0, currentPassport: Passport): Int = {
       def countPassports: Int = {
-        if (isValidPassport(currentPassport)) passports + 1 else passports
+        passports + (if (isValidPassport(currentPassport)) 1 else 0)
       }
-
-      if (lines.isEmpty) {
-        countPassports
-      } else {
-        if (lines.head.isEmpty) {
-          combinePassports(lines.tail, countPassports, newPassport())
-        } else {
-          val updatedPassport = (fieldsExtractor findAllIn lines.head).map({
-            case fieldsExtractor(key, value) => key -> value
-          }).toMap ++ currentPassport
-          combinePassports(lines.tail, passports, updatedPassport)
-        }
+      lines match {
+        case Nil => countPassports
+        case head :: tail =>
+          head match {
+            case "" => combinePassports(tail, countPassports, newPassport())
+            case _ =>
+              combinePassports(tail, passports, (fieldsExtractor findAllIn head)
+                .map({ case fieldsExtractor(key, value) => key -> value })
+                .toMap ++ currentPassport
+              )
+          }
       }
     }
 
