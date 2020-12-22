@@ -17,10 +17,6 @@ object Solver extends Problem(2020, 4) {
     val CountryId = "cid"
     val RequiredFieldsCount = 7
 
-    def isValidPassportWorking(passport: Passport): Boolean = {
-      val counted = passport.count(c => c._1 != CountryId)
-      counted == RequiredFieldsCount
-    }
     def isValidPassport(passport: Passport): Boolean = {
       val counted = passport.count({
         case (countryId, _) => countryId != CountryId
@@ -41,14 +37,11 @@ object Solver extends Problem(2020, 4) {
         if (lines.head.isEmpty) {
           combinePassports(lines.tail, countPassports, newPassport())
         } else {
-          val updatedPassport = fieldsExtractor.findAllIn(lines.head).matchData
-            .foldLeft(currentPassport)(
-              (pass, matches) => {
-                val key = matches.group(1)
-                val value = matches.group(2)
-                pass + (key -> value)
-              }
-            )
+          val updatedPassport: Passport = (fieldsExtractor findAllIn lines.head).map({
+            case fieldsExtractor(key, value) => key -> value
+          }).foldLeft(currentPassport)(
+            (pass, matches) => pass + matches
+          )
           combinePassports(lines.tail, passports, updatedPassport)
         }
       }
