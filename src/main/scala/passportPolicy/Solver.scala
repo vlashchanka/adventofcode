@@ -37,10 +37,10 @@ object Solver extends Problem(2020, 4) {
         if (lines.head.isEmpty) {
           combinePassports(lines.tail, countPassports, newPassport())
         } else {
-          val updatedPassport: Passport = (fieldsExtractor findAllIn lines.head).map({
-            case fieldsExtractor(key, value) => key -> value
-          }).foldLeft(currentPassport)(
-            (pass, matches) => pass + matches
+          val updatedPassport: Passport = (fieldsExtractor findAllIn lines.head).foldLeft(currentPassport)(
+            (pass, matches) => matches match {
+              case fieldsExtractor(key, value) => pass ++ Map(key -> value)
+            }
           )
           combinePassports(lines.tail, passports, updatedPassport)
         }
